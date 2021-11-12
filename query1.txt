@@ -44,3 +44,91 @@ Query7: Filtering option is the scientific name of species, list all distinct na
 SELECT DISTINCT park_name 
 FROM Species
 WHERE scientific_name LIKE ‘%X%’
+
+Statistical Analysis
+Query8: tabulate top 10 population density of a given park, calculated by population of each category/acres                                                                                          when search park
+
+WITH temp AS (
+SELECT park_name, category, count(species_id) AS speciesNum
+FROM Species 
+WHERE park_name = X
+GROUP BY category
+)
+SELECT a.category, b.speciesNum/a.Acres AS density
+FROM parks a JOIN temp b ON a.park_name = b.park_name
+ORDER BY density 
+LIMIT 10
+
+Query9: tabulate top 10 state of occurrence of a given species when search the specified species
+
+WITH temp AS (
+SELECT count(scientific_name) as num, scientific_name, state 
+FROM Species s join Park p on s.park_name = p.park_name
+GROUP BY state
+)
+SELECT state
+FROM temp t
+WHERE scientific_name = X 
+ORDER BY num desc
+LIMIT 10
+
+
+Query10: When searching the given state, calculate the result of (sum of park acres in given state/the total area of given state) as the greening rate of the specified state
+With total_acres AS ( 
+	SELECT SUM(acres) as total_acres, state
+	FROM Parks p
+	GROUP BY state
+)
+SELECT total_acres/area as percent, state
+FROM Area a join state s on a.state = s.state
+WHERE a.state = X 
+
+Trail: (sort)
+Query11: filtering option is park+feature, list trails with specified park and features  (sort by difficulty, number of reviews, avg rating, ...)
+SELECT * FROM Features s WHERE s.park_name = X1 and s.feature_name = X2
+
+Query12:  filtering option is park+activity, list trails with specified park and activities 
+SELECT * FROM Activities a WHERE a.park_name = X1 and a.activity_name = X2
+
+Query13: filtering option is state+activities, list parks and endangered_species in parks with specified state and activities  (birding)  
+
+WITH Bird_Park AS (
+SELECT Parks.park_name AS p, Parks.state AS t
+FROM Parks JOIN Species
+ON Parks.park_name = Species.park_name
+WHERE Species.category = “Bird”
+), 
+Park_Species AS (
+	SELECT Parks.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
+	FROM Parks JOIN Species
+	ON Parks.park_name = Species.park_name 
+	WHERE Species.conservation_status = “Endangered” OR Species.conservation_status = “species_of_concern” OR Species.conservation_status = “Threatened”
+	AND Species.category = “Bird”
+)
+SELECT Bird_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
+FROM Bird_Park 
+JOIN Activity ON Bird_Park.p = Activity.park_name
+JOIN Park_Species ON Bird_Park.p = Park_Species.p
+JOIN Trail ON Bird_Park.p = Trail.park_name
+WHERE Activity.activity = “birding” AND Trail.state_name = X
+
+Query14: filtering option is state+activities, list parks and endangered_species in parks with specified state and activities  (fishing)
+WITH Fish_Park AS (
+SELECT Parks.park_name AS p, Parks.state AS t
+FROM Parks JOIN Species
+ON Parks.park_name = Species.park_name
+WHERE Species.category = “Fish”
+), 
+Park_Species AS (
+	SELECT Parks.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
+	FROM Parks JOIN Species
+	ON Parks.park_name = Species.park_name 
+	WHERE Species.conservation_status = “Endangered” OR Species.conservation_status = “species_of_concern” OR Species.conservation_status = “Threatened”
+	AND Species.category = “Fish”
+)
+SELECT Fish_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
+FROM Bird_Park 
+JOIN Activity ON Fish_Park.p = Activity.park_name
+JOIN Park_Species ON Fish_Park.p = Park_Species.p
+JOIN Trail ON Fish_Park.p = Trail.park_name
+WHERE Activity.activity = “fishing” AND Trail.state_name = X
