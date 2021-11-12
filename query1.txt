@@ -1,3 +1,24 @@
+DDL:
+
+Table Park:
+Create Table Park(park_code varchar(4), park_name varchar(255), state varchar(255), acres int(15), latitude decimal(5,2), longitude decimal(5,2), PRIMARY KEY (park_name))
+
+Table Species:
+Create Table Species(species_id varchar(15), park_name varchar(255), category varchar(255), ord varchar(255), family varchar(255), scientific_name varchar(255), common_names varchar(255), record_status varchar(255), occurrence varchar(255), nativeness varchar(255), abundance varchar(255), seasonality varchar(255), conservation_status varchar(255), PRIMARY KEY (species_id), FOREIGN KEY (park_name) REFERENCES Park(park_name))
+
+Table Trails:
+Create Table Trails(trail_id int(25), trail_name varchar(255), park_name varchar(255), city_name varchar(255), state_name varchar(255), popularity decimal(10,4), length decimal(10,4), elevation_gain decimal(10,4), difficulty_rating int(2), route_type varchar(255), visitor_usage int(2), avg_rating decimal(5,2), num_reviews int(5), PRIMARY KEY (trail_id), FOREIGN KEY (park_name) REFERENCES Park(park_name))
+
+Table features:
+Create Table Features (trail_name varchar(255), park_name varchar(255), feature_name varchar(255), PRIMARY KEY (trail_name, park_name, feature_name), FOREIGN KEY (park_name) REFERENCES Park(park_name))
+
+Table activities:
+Create Table Activities (trail_name VARCHAR(255), park_name VARCHAR(255), activity_name varchar(255), PRIMARY KEY(trail_name, park_name, activity_name), FOREIGN KEY(park_name) REFERENCES Park(park_name))
+
+Table area:
+Create Table Area(state VARCHAR(255), area int(6), PRIMARY KEY (state))
+
+
 Map:
 Query1: List all parks of a selected state on the map
 SELECT park_name FROM Park WHERE state = X
