@@ -1,0 +1,46 @@
+Map:
+Query1: List all parks of a selected state on the map
+SELECT park_name FROM Park WHERE state = X
+
+
+Query2: List top3 species in each state
+WITH TOPTHREE  AS ( 
+SELECT *, ROW_NUMBER() 
+OVER (
+ PARTITION BY p.state
+ORDER BY s.scientific_name DESC
+) AS RowNo 
+FROM Species s JOIN Park p ON s.park_name = p.park_name
+) SELECT * FROM TOPTHERE WHERE RowNo <= 3
+
+
+Query3: Show the total number of trails in each state
+
+SELECT state_name, count(*) AS numTrails
+FROM Trails
+WHERE state_name = X
+
+
+Search:
+Query4: Filtering options is park + category, list all distinct species in the specified park and category
+SELECT DISTINCT scientific_name
+FROM Species
+WHERE category = X1 AND park_name =X2
+
+
+Query5: Filtering option is park, list all distinct species in specified park and show the info of park
+SELECT DISTINCT scientific_name
+FROM Species
+WHERE park_name =X
+
+
+Query6: Filtering option is state, list all distinct species in the specified state
+SELECT distinct scientific_name
+FROM Species s join Park p on s.park_name = p.park_name
+WHERE p.state = X
+
+Query7: Filtering option is the scientific name of species, list all distinct name of park in the specified species
+
+SELECT DISTINCT park_name 
+FROM Species
+WHERE scientific_name LIKE ‘%X%’
