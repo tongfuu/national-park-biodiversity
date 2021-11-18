@@ -19,7 +19,54 @@ async function hello(req, res) {
     res.send(JSON.parse('{"text":"Hello! Welcome to National Park Biodiversity Project!"}'))
 }
 
+// Route 2 (handler) List all parks of a selected state on the map
+async function parks_in_state(req, res) {
+    
+    const state = req.query.state
+    var query = `SELECT park_name FROM Park WHERE state = '${state}'`;
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
+
+
+// Route 3 (handler)
+async function num_trails_state(req, res) {
+
+    console.log('hello')
+    const state = req.query.state
+    var query = `SELECT state_name, count(*) AS numTrails
+    FROM Trails
+    WHERE state_name = '${state}'
+    `;
+
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
+
+
 
 module.exports = {
-    hello
+    hello,
+    num_trails_state,
+    parks_in_state
 }
