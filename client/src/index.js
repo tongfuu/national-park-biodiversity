@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
+import MapPage from './pages/MapPage';
 import ParksPage from './pages/ParksPage';
 import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
@@ -23,6 +24,11 @@ ReactDOM.render(
 							path="/"
 							render={() => (
 								<HomePage />
+							)}/>
+		<Route exact
+							path="/map"
+							render={() => (
+								<MapPage />
 							)}/>
         <Route exact
 							path="/parks"
