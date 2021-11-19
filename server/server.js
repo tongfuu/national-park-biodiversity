@@ -12,17 +12,23 @@ app.use(cors({
     origin: '*'
 }));
 
-// Route 1 - register as GET 
+// Route 0 - register as GET 
 app.get('/hello', routes.hello)
 
-//Route 2 - register as GET
+//Route 1 - register as GET
 app.get('/map/parks_in_state', routes.parks_in_state)
 
+// Route 2 - register as GET 
+app.get('/map/common_animals', routes.common_animals_state)
 
-// Route 4 - register as GET 
+// Route 3 - register as GET 
 app.get('/map/num_trails', routes.num_trails_state)
 
+// Route 4 - register as GET 
+app.get('/search/search_species', routes.search_species)
 
+// Route 5 - register as GET 
+app.get('/search/species_state', routes.species_state)
 
 app.listen(config.server_port, () => {
     console.log(`Server running at http://${config.server_host}:${config.server_port}/`);
