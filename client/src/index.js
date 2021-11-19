@@ -1,20 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
+
+import * as serviceWorker from './serviceWorker';
+
 import {
 	BrowserRouter as Router,
 	Route,
 	Switch
 } from 'react-router-dom';
 
-import HomePage from './pages/HomePage';
+import App from './App';
+// import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
 import ParksPage from './pages/ParksPage';
 import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "shards-ui/dist/css/shards.min.css"
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "shards-ui/dist/css/shards.min.css"
 
 ReactDOM.render(
   <div>
@@ -23,7 +28,7 @@ ReactDOM.render(
         <Route exact
 							path="/"
 							render={() => (
-								<HomePage />
+								<App />
 							)}/>
 		<Route exact
 							path="/map"
@@ -51,3 +56,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
