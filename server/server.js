@@ -30,14 +30,26 @@ app.get('/search/search_species', routes.search_species)
 // Route 5 - register as GET 
 app.get('/search/species_state', routes.species_state)
 
+// Route 6 - register as GET 
+app.get('/search/common_park', routes.common_park)
+
 // Route 7  - register as GET
 app.get('/search/density_park', routes.density_park)
+
+// Route 8 - register as GET 
+app.get('/search/scientific_state', routes.scientific_state)
 
 // Route 9  - register as GET
 app.get('/search/green_state', routes.green_state)
 
+// Route 10 - register as GET 
+app.get('/trail/park_feature', routes.park_feature)
+
 // Route 11  - register as GET
 app.get('/trail/park_activity', routes.park_activity)
+
+// Route 12 - register as GET 
+app.get('/trail/state_birding', routes.state_birding)
 
 // Route 13  - register as GET
 app.get('/trail/state_fishing', routes.state_fishing)

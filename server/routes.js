@@ -146,6 +146,28 @@ async function species_state(req, res) {
     });
 }
 
+// Route 6 (handler)
+async function common_park(req, res) {
+    const name = req.query.name
+    var query = `SELECT DISTINCT park_name 
+    FROM Species
+    WHERE common_names LIKE '%${name}%'    
+    `;
+
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            // console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            // console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
+
 
 // Route 7 (handler)
 async function density_park(req, res) {
@@ -162,6 +184,30 @@ async function density_park(req, res) {
         FROM Park a JOIN temp b ON a.park_name = b.park_name
         ORDER BY density 
         LIMIT 10
+    `;
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            // console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            // console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
+
+// Route 8 (handler)
+async function scientific_state(req, res) {
+    const name = req.query.name
+    var query = `SELECT count(scientific_name) as num, state 
+    FROM Species s join Park p on s.park_name = p.park_name
+    WHERE scientific_name = '${name}'
+    GROUP BY state
+    ORDER BY count(scientific_name)
+    LIMIT 10 
     `;
 
     connection.query(query, function (error, results, fields) {
@@ -206,6 +252,27 @@ async function green_state(req, res) {
     });
 }
 
+// Route 10 (handler)
+async function park_feature(req, res) {
+    const name = req.query.name
+    const park = req.query.park
+    var query = `SELECT * 
+    FROM Features s 
+    WHERE s.park_name = '${park}' and s.feature_name = '${name}'
+    `;
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            // console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            // console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
 
 // Route 11 (handler)
 async function park_activity(req, res) {
@@ -229,6 +296,44 @@ async function park_activity(req, res) {
         }
     });
 }
+
+// Route 12 (handler)
+async function state_birding(req, res) {
+    const state = req.query.state
+    var query = `WITH Bird_Park AS (
+        SELECT Park.park_name AS p, Park.state AS t
+        FROM Park JOIN Species
+        ON Park.park_name = Species.park_name
+        WHERE Species.category = 'Bird'
+        ),
+        Park_Species AS (
+          SELECT Park.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
+          FROM Park JOIN Species
+          ON Park.park_name = Species.park_name
+          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' 
+          OR Species.conservation_status = 'Threatened'
+          AND Species.category = 'Bird'
+        )
+        SELECT Bird_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
+        FROM Bird_Park
+        JOIN Activities ON Bird_Park.p = Activities.park_name
+        JOIN Park_Species ON Bird_Park.p = Park_Species.p
+        JOIN Trails ON Bird_Park.p = Trails.park_name
+        WHERE Activities.activity_name = 'birding' AND Trails.state_name = '${state}'`;
+
+    connection.query(query, function (error, results, fields) {
+        if (error) {
+            //console.log(error)
+            res.json({ error: error })
+        } else if (results.length > 0) {
+            //console.log(results)
+            res.json({ results: results })
+        } else {
+            res.json({ results: []})
+        }
+    });
+}
+
 
 // Route 13 (handler)
 async function state_fishing(req, res) {
@@ -280,5 +385,9 @@ module.exports = {
     density_park,
     green_state,
     park_activity,
-    state_fishing
+    state_fishing,
+    common_park,
+    scientific_state,
+    park_feature,
+    state_birding
 }
