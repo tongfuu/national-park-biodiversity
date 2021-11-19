@@ -30,6 +30,18 @@ app.get('/search/search_species', routes.search_species)
 // Route 5 - register as GET 
 app.get('/search/species_state', routes.species_state)
 
+// Route 7  - register as GET
+app.get('/search/density_park', routes.density_park)
+
+// Route 9  - register as GET
+app.get('/search/green_state', routes.green_state)
+
+// Route 11  - register as GET
+app.get('/trail/park_activity', routes.park_activity)
+
+// Route 13  - register as GET
+app.get('/trail/state_fishing', routes.state_fishing)
+
 app.listen(config.server_port, () => {
     console.log(`Server running at http://${config.server_host}:${config.server_port}/`);
 });
