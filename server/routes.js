@@ -310,8 +310,7 @@ async function state_birding(req, res) {
           SELECT Park.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
           FROM Park JOIN Species
           ON Park.park_name = Species.park_name
-          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' 
-          OR Species.conservation_status = 'Threatened'
+          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' OR Species.conservation_status = 'Threatened'
           AND Species.category = 'Bird'
         )
         SELECT Bird_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
@@ -319,7 +318,9 @@ async function state_birding(req, res) {
         JOIN Activities ON Bird_Park.p = Activities.park_name
         JOIN Park_Species ON Bird_Park.p = Park_Species.p
         JOIN Trails ON Bird_Park.p = Trails.park_name
-        WHERE Activities.activity_name = 'birding' AND Trails.state_name = '${state}'`;
+        WHERE Activities.activity_name = 'birding' AND Trails.state_name = '${state}'
+        LIMIT 500
+        `;
 
     connection.query(query, function (error, results, fields) {
         if (error) {
@@ -350,7 +351,8 @@ async function state_fishing(req, res) {
           SELECT Park.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
           FROM Park JOIN Species
           ON Park.park_name = Species.park_name
-          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' OR Species.conservation_status = 'Threatened'
+          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' 
+          OR Species.conservation_status = 'Threatened'
           AND Species.category = 'Fish'
         )
         SELECT Fish_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
@@ -358,7 +360,8 @@ async function state_fishing(req, res) {
         JOIN Activities ON Fish_Park.p = Activities.park_name
         JOIN Park_Species ON Fish_Park.p = Park_Species.p
         JOIN Trails ON Fish_Park.p = Trails.park_name
-        WHERE Activities.activity_name = 'fishing' AND Trails.state_name = '${state}';
+        WHERE Activities.activity_name = 'fishing' AND Trails.state_name = '${state}'
+        LIMIT 500;
     `;
 
     connection.query(query, function (error, results, fields) {
