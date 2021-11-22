@@ -29,6 +29,8 @@ parks.rename(columns={'Park Code': 'park_code', 'Park Name': 'park_name', 'State
 
 parks.head()
 
+parks['state'] = parks.apply(lambda x: x['state'][:2], axis=1)
+
 parks.to_csv('parks_cleaned.csv')
 
 """# Clean species.csv"""
@@ -81,7 +83,7 @@ trails[['units']].describe()
 trails = trails[trails['units'] == 'i']
 trails.drop(columns=['units'], inplace=True)
 
-trails_cleaned.head()
+trails.head()
 
 """Resolve inconsistent park name between park table and trail table"""
 
@@ -94,12 +96,14 @@ trails['name_in'] = trails.apply(lambda x: x['park_name'] in names_to_remove, ax
 trails = trails[trails['name_in'] == False]
 trails.drop(columns=['name_in'], inplace=True)
 
+trails.shape
+
 # Find mapping for park names between two tables
 name_mapping = {'Denali National Park': 'Denali National Park and Preserve', 'Gateway Arch National Park': 'Gates Of The Arctic National Park and Preserve',
                 'Glacier Bay National Park': 'Glacier Bay National Park and Preserve', 'Katmai National Park': 'Katmai National Park and Preserve',
                 'Sequoia National Park': 'Sequoia and Kings Canyon National Parks'}
 
-trails.replace(name_mapping, inplace=True)
+trails['park_name'] = trails.apply(lambda x: name_mapping[x['park_name']] if x['park_name'] in name_mapping else x['park_name'], axis=1)
 
 trails.head()
 
@@ -107,6 +111,22 @@ parks_unique = sorted(parks['park_name'].unique())
 trails_unique = sorted(trails['park_name'].unique())
 
 set(trails_unique) - set(parks_unique)
+
+"""Resolve inconsistent state name by changing full names to abbreviations."""
+
+trails['state_name'].unique()
+
+state_name_mapping = {'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA', 'Colorado': 'CO',
+       'Florida': 'FL', 'Kentucky': 'KY', 'Maine': 'ME', 'Michigan': 'MI', 'Minnesota': 'MN',
+       'Missouri': 'MO', 'Montana': 'MT', 'Nevada': 'NV', 'New Mexico': 'NM', 'North Carolina': 'NC',
+       'North Dakota': 'ND', 'Ohio': 'OH', 'Oregon': 'OR', 'South Carolina': 'SC', 'South Dakota': 'SD',
+       'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Virginia': 'VA', 'Washington': 'WA', 'Wyoming': 'WY'}
+
+trails['state_name'] = trails.apply(lambda x: state_name_mapping[x['state_name']], axis=1)
+
+trails.head()
+
+trails.shape
 
 """### Create features table"""
 
@@ -154,6 +174,6 @@ activities_cleaned['activity_name'].unique()
 
 activities_cleaned.to_csv('activities_cleaned.csv')
 
-trails_cleaned.drop(columns=['features', 'activities'], inplace=True)
+trails_cleaned = trails.drop(columns=['features', 'activities'])
 
 trails_cleaned.to_csv('trails_cleaned.csv')
