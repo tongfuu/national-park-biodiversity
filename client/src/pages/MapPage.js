@@ -3,14 +3,19 @@ import React, { memo } from 'react';
 import { Navigation } from "../components/navigation";
 import ReactTooltip from "react-tooltip";
 import { useState } from "react";
+import { geoCentroid } from "d3-geo";
 
-import JsonData from "../data/data.json";
+import { get_parks } from '../fetcher'
+
+import allStates from "../data/allstates.json";
 
 import {
   ZoomableGroup,
   ComposableMap,
   Geographies,
-  Geography
+  Geography,
+  Marker,
+  Annotation
 } from "react-simple-maps";
 
 
@@ -26,19 +31,7 @@ function Map() {
   }
 
 
-
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
-
-
-const rounded = num => {
-  if (num > 1000000000) {
-    return Math.round(num / 100000000) / 10 + "Bn";
-  } else if (num > 1000000) {
-    return Math.round(num / 100000) / 10 + "M";
-  } else {
-    return Math.round(num / 100) / 10 + "K";
-  }
-};
 
 const MapChart = ({ setTooltipContent }) => {
   return (
@@ -52,8 +45,12 @@ const MapChart = ({ setTooltipContent }) => {
                   key={geo.rsmKey}
                   geography={geo}
                   onMouseEnter={() => {
-                    const { NAME, POP_EST } = geo.properties;
-                    setTooltipContent(`${NAME} — ${rounded(POP_EST)}`);
+                    const state = allStates.find(s => s.val === geo.id);
+
+                    // var stateResults = get_parks(state);
+                    // console.log(stateResults);
+
+                    setTooltipContent(`${state.id}`);
                   }}
                   onMouseLeave={() => {
                     setTooltipContent("");
