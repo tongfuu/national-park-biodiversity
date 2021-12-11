@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Navigation } from "../components/navigation";
 import { Features } from "../components/features";
@@ -6,24 +6,69 @@ import { Features } from "../components/features";
 
 import JsonData from "../data/data.json";
 
-// import { Button } from "shards-react";
+import {
+  ZoomableGroup,
+  ComposableMap,
+  Geographies,
+  Geography
+} from "react-simple-maps";
 
-// import { num_trails_state, get_parks } from '../fetcher'
+const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";;
 
-// const App = () => {
-//   const [landingPageData, setLandingPageData] = useState({});
-//   useEffect(() => {
-//     setLandingPageData(JsonData);
-//   }, []);
 
-//   return (
-//     <div>
-//       <Navigation />
-//       <Header data={landingPageData.Header} />
-//       <Features data={landingPageData.Features} />
-//     </div>
-//   );
-// };
+  const rounded = num => {
+    if (num > 1000000000) {
+      return Math.round(num / 100000000) / 10 + "Bn";
+    } else if (num > 1000000) {
+      return Math.round(num / 100000) / 10 + "M";
+    } else {
+      return Math.round(num / 100) / 10 + "K";
+    }
+  };
+  
+  const MapChart = ({ setTooltipContent }) => {
+    return (
+      <>
+        <ComposableMap data-tip="" projectionConfig={{ scale: 200 }}>
+          <ZoomableGroup>
+            <Geographies geography={geoUrl}>
+              {({ geographies }) =>
+                geographies.map(geo => (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onMouseEnter={() => {
+                      const { NAME, POP_EST } = geo.properties;
+                      setTooltipContent(`${NAME} — ${rounded(POP_EST)}`);
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipContent("");
+                    }}
+                    style={{
+                      default: {
+                        fill: "#D6D6DA",
+                        outline: "none"
+                      },
+                      hover: {
+                        fill: "#F53",
+                        outline: "none"
+                      },
+                      pressed: {
+                        fill: "#E42",
+                        outline: "none"
+                      }
+                    }}
+                  />
+                ))
+              }
+            </Geographies>
+          </ZoomableGroup>
+        </ComposableMap>
+      </>
+    );
+  };
+
+  
 
 class MapPage extends React.Component {
 
@@ -35,28 +80,7 @@ class MapPage extends React.Component {
       text2: '',
       landingPageData: JsonData
     }
-
-    // this.handleButtonChange_num_trails_state = this.handleButtonChange_num_trails_state.bind(this)
-    // this.handleButtonChange_parks_in_state = this.handleButtonChange_parks_in_state.bind(this)
-
-
   }
-
-  // handleButtonChange_num_trails_state() {
-
-  //   num_trails_state("Washington").then(res => {
-  //     // console.log(res.results )
-  //     this.setState({ text1: JSON.stringify(res.results)}) })
-  // }
-
-  // handleButtonChange_parks_in_state() {
-
-  //   get_parks("WA").then(res => {
-  //     // console.log(res.results )
-  //     this.setState({ text2: JSON.stringify(res.results )})
-  //   })
-  // }
-
 
   render() {
 
@@ -67,19 +91,10 @@ class MapPage extends React.Component {
         <div style={{ marginTop: '10vh' }}>
         <Features data={this.state.landingPageData.Features} />
         </div>
-        {/* <h5>MapPage</h5> */}
-        {/* <MenuBar />
-        <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-          <h3>Map</h3>
-          <Button variant="primary" onClick={this.handleButtonChange_num_trails_state} >num_trails_state</Button >
-          <h5>{this.state.text1}</h5>
-          <Button variant="primary" onClick={this.handleButtonChange_parks_in_state} >parks_in_state</Button >
-          <h5>{this.state.text2}</h5>
-        </div> */}
       </div>
     )
   }
 
 }
 
-export default MapPage
+export default memo(MapChart)

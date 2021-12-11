@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import ReactTooltip from "react-tooltip";
 
 import * as serviceWorker from './serviceWorker';
+import MapChart from "./pages/MapPage";
 
 import {
 	BrowserRouter as Router,
@@ -16,10 +18,18 @@ import MapPage from './pages/MapPage';
 import ParksPage from './pages/ParksPage';
 import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
-// import 'antd/dist/antd.css';
 
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "shards-ui/dist/css/shards.min.css"
+
+function App() {
+	const [content, setContent] = useState("");
+	return (
+	  <div>
+		<MapChart setTooltipContent={setContent} />
+		<ReactTooltip>{content}</ReactTooltip>
+	  </div>
+	);
+  }
+
 
 ReactDOM.render(
   <div>
@@ -33,7 +43,7 @@ ReactDOM.render(
 		<Route exact
 							path="/map"
 							render={() => (
-								<MapPage />
+								<MapPage />,
 							)}/>
         <Route exact
 							path="/parks"

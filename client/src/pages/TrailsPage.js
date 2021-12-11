@@ -79,7 +79,7 @@ class TrailsPage extends React.Component {
 
               </Form>
               <Divider />
-              <Table dataSource={this.state.trailsResults} style={{ marginLeft: '20vh'}}>
+              <Table dataSource={this.state.trailsResults} style={{ marginLeft: '100vh'}}>
                       <Column title="Trails" dataIndex="trail_name" key="trail_name"/>
               </Table>
 
