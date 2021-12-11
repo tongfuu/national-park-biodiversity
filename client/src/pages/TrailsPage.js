@@ -153,7 +153,14 @@ class TrailsPage extends React.Component {
                     </FormGroup>
               </Form>
               <Divider />
+<<<<<<< HEAD
               <TrailsTable rows={this.state.rows}/>
+=======
+              <Table dataSource={this.state.trailsResults} style={{ marginLeft: '100vh'}}>
+                      <Column title="Trails" dataIndex="trail_name" key="trail_name"/>
+              </Table>
+
+>>>>>>> b0dc87bbb6d82e9867108594f99a9c9f9037420c
           </div>
       )
   }
