@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ReactTooltip from "react-tooltip";
+// import ReactTooltip from "react-tooltip";
+// import { useState } from "react";
 
 import * as serviceWorker from './serviceWorker';
-import MapChart from "./pages/MapPage";
+// import MapChart from './pages/MapPage';
 
 import {
 	BrowserRouter as Router,
@@ -20,15 +21,15 @@ import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
 
 
-function App() {
-	const [content, setContent] = useState("");
-	return (
-	  <div>
-		<MapChart setTooltipContent={setContent} />
-		<ReactTooltip>{content}</ReactTooltip>
-	  </div>
-	);
-  }
+// function App2() {
+// 	const [content, setContent] = useState("");
+// 	return (
+// 	  <div>
+// 		<MapChart setTooltipContent={setContent} />
+// 		<ReactTooltip>{content}</ReactTooltip>
+// 	  </div>
+// 	);
+//   }
 
 
 ReactDOM.render(
@@ -43,7 +44,7 @@ ReactDOM.render(
 		<Route exact
 							path="/map"
 							render={() => (
-								<MapPage />,
+								<MapPage />
 							)}/>
         <Route exact
 							path="/parks"
@@ -66,7 +67,11 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+// const rootElement = document.getElementById("root");
+// ReactDOM.render(<App />, rootElement);
+
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
