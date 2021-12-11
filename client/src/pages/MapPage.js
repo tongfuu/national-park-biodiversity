@@ -31,24 +31,6 @@ function Map() {
   }
 
 
-function Data() {
-  const [parks, setParks] = useState(null);
-
-  // + adding the use
-  useEffect(() => {
-    getData();
-
-    // we will use async/await to fetch this data
-    async function getParks() {
-      const response = await fetch("https://www.anapioficeandfire.com/api/books");
-      const data = await response.json();
-
-      // store the data into our books variable
-      setBooks(data) ;
-    }
-  }, []); // <- you may need to put the setBooks function in this array
-
-
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
 const MapChart = ({ setTooltipContent }) => {
