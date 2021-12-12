@@ -3,8 +3,9 @@ import { Form, FormInput, FormGroup, FormSelect, Button} from "shards-react";
 
 import { Navigation } from "../components/navigation";
 import { SpeciesTable } from "../components/speciesTable";
+import { ScientificNameTable } from "../components/scientificName";
 
-import { park_category, park_state } from '../fetcher'
+import { park_category, park_state, scientific_state } from '../fetcher'
 
 import {
     Divider,
@@ -17,18 +18,22 @@ class SearchPage extends React.Component {
     super(props)
     this.state = {
         parkName: "Acadia National Park",
-        categoryName: "Mammal",
+        categoryName: "",
         stateName: "ME",
         searchResults: [],
-        rows: [],
+        searchrows: [],
+        scientific_name: "",
+        scientificResults: [],
+        scientificRows: []
     }
 
     this.handleParkNameChange = this.handleParkNameChange.bind(this)
     this.handleCategoryNameChange = this.handleCategoryNameChange.bind(this)
     this.handleStateNameChange = this.handleStateNameChange.bind(this)
+    this.handleScientificNameChange = this.handleScientificNameChange.bind(this)
     this.updateCategorySearch = this.updateCategorySearch.bind(this)
     this.updateStateSearch = this.updateStateSearch.bind(this)
-
+    this.updateScientificSearch = this.updateScientificSearch.bind(this)
     }
 
     handleParkNameChange(event) {
@@ -43,31 +48,45 @@ class SearchPage extends React.Component {
       this.setState({ stateName: event.target.value })
     }
 
+    handleScientificNameChange(event) {
+      this.setState({ scientific_name: event.target.value })
+    }
+
     updateCategorySearch() {
       park_category(this.state.parkName, this.state.categoryName).then(res => {
           this.setState({ searchResults: res.results })
-          this.setState({ rows: []});
+          this.setState({ searchrows: []});
 
           this.state.searchResults.forEach((item, i) => {
             const ele = {id: i, species_name: item.scientific_name};
-            this.setState({ rows: [...this.state.rows, ele]})
+            this.setState({ searchrows: [...this.state.searchrows, ele]})
         });
       })
     
   }
 
-  updateStateSearch() {
-    park_state(this.state.stateName).then(res => {
-        this.setState({ searchResults: res.results })
-        //console.log(this.state.stateName)
-        this.setState({ rows: []});
+updateStateSearch() {
+  park_state(this.state.stateName).then(res => {
+      this.setState({ searchResults: res.results })
+      this.setState({ searchrows: []});
 
-        this.state.searchResults.forEach((item, i) => {
-          const ele = {id: i, species_name: item.scientific_name};
-          this.setState({ rows: [...this.state.rows, ele]})
-      });
-    })
-  //console.log(this.state.rows)
+      this.state.searchResults.forEach((item, i) => {
+        const ele = {id: i, species_name: item.scientific_name};
+        this.setState({ searchrows: [...this.state.searchrows, ele]})
+    });
+  })
+}
+
+updateScientificSearch() {
+  scientific_state(this.state.scientific_name).then(res => {
+      this.setState({ scientificResults: res.results })
+      this.setState({ scientificRows: []});
+
+      this.state.scientificResults.forEach((item, i) => {
+        const ele = {id: i, num: item.num, state: item.state};
+        this.setState({ scientificRows: [...this.state.scientificRows, ele]})
+    });
+  })
 }
 
 
@@ -140,6 +159,7 @@ render() {
                     <label>Category</label>
 
                     <FormSelect onChange={this.handleCategoryNameChange}>
+                    <option value="">None</option>
                     <option value="Mammal">Mammal</option>
                     <option value="Bird">Bird</option>
                     <option value="Reptile">Reptile</option>
@@ -193,7 +213,20 @@ render() {
                 </FormGroup>
           </Form>
           <Divider />
-          <SpeciesTable rows={this.state.rows}/>
+          <SpeciesTable rows={this.state.searchrows}/>
+          <Divider />
+
+          <Form style={{ width: '80vw', margin: '0 auto', marginTop: '5vh' }}>
+                    <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                        
+                        <label>Scientific_name</label>
+                        <FormInput value = {this.state.scientific_name} onChange={this.handleScientificNameChange} placeholder="scientific_name"/>
+                        <Button style={{ marginLeft: '7vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateScientificSearch}>Search Scientific_name</Button>
+
+                    </FormGroup>
+              </Form>
+              <Divider />
+              <ScientificNameTable rows={this.state.scientificRows}/>
       </div>
   )
 }

@@ -73,6 +73,13 @@ const fishing_state = async (state) => {
     return res.json()
 }
 
+const scientific_state = async (name) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/scientific_state?name=${name}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 export {
     welcome,
     num_trails_state,
@@ -83,5 +90,6 @@ export {
     park_category,
     park_state,
     birding_state,
-    fishing_state
+    fishing_state,
+    scientific_state
 }
