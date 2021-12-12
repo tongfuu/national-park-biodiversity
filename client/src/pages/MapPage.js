@@ -12,8 +12,6 @@ import { get_parks } from '../fetcher'
     constructor(props) {
       super(props)
       this.state = {
-        st:"",
-        number:"",
         num_new:"",
         content:""
     }
@@ -22,22 +20,12 @@ import { get_parks } from '../fetcher'
     }
 
     setContent(state_name) {
-      this.setState({ st: state_name })
-      get_parks(this.state.st).then(res => {
-        this.setState({ number: res.results })
-
-        this.state.number.forEach((item, i) => {
-          this.setState({ num_new: item.num})
-          
+      get_parks(state_name).then(res => {
+        this.setState({ num_new: res.results[0].num}, () =>{
+          this.setState({ content: state_name + " - " + this.state.num_new});
+        }
+        )
       })
-
-      this.setState({ content: this.state.st+" - "+this.state.num_new});
-    
-
-
-      })
-      
-
     }
 
   

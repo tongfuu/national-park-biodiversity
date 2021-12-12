@@ -90,7 +90,6 @@ async function search_species(req, res) {
     const park = req.query.park
     const category = req.query.category ? req.query.category : null
     if (category) {
-        console.log('hellooooo')
         connection.query(`SELECT DISTINCT scientific_name
         FROM Species
         WHERE category = '${category}' AND park_name = '${park}'`, 
