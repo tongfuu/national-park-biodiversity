@@ -23,7 +23,7 @@ async function hello(req, res) {
 async function parks_in_state(req, res) {
     
     const state = req.query.state
-    var query = `SELECT park_name FROM Park WHERE state = '${state}'`;
+    var query = `SELECT COUNT(park_name) AS num FROM Park WHERE state = '${state}'`;
 
     connection.query(query, function (error, results, fields) {
         if (error) {
@@ -90,7 +90,6 @@ async function search_species(req, res) {
     const park = req.query.park
     const category = req.query.category ? req.query.category : null
     if (category) {
-        console.log('hellooooo')
         connection.query(`SELECT DISTINCT scientific_name
         FROM Species
         WHERE category = '${category}' AND park_name = '${park}'`, 
