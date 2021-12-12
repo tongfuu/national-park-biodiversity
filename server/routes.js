@@ -23,7 +23,7 @@ async function hello(req, res) {
 async function parks_in_state(req, res) {
     
     const state = req.query.state
-    var query = `SELECT park_name FROM Park WHERE state = '${state}'`;
+    var query = `SELECT COUNT(park_name) AS num FROM Park WHERE state = '${state}'`;
 
     connection.query(query, function (error, results, fields) {
         if (error) {
