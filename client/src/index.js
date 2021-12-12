@@ -16,7 +16,6 @@ import {
 import App from './App';
 // import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
-import ParksPage from './pages/ParksPage';
 import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
 
@@ -45,11 +44,6 @@ ReactDOM.render(
 							path="/map"
 							render={() => (
 								<MapPage />
-							)}/>
-        <Route exact
-							path="/parks"
-							render={() => (
-								<ParksPage />
 							)}/>
         <Route exact
 							path="/search"

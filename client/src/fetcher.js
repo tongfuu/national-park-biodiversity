@@ -21,6 +21,16 @@ const get_parks = async (state) => {
     return res.json()
 }
 
+
+const get_common_animals = async (state) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/map/common_animals_state?state=${state}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+
+
 const park_feature = async (park, feature) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/park_feature?park=${park}&feature=${feature}`, {
         method: 'GET',
@@ -55,8 +65,9 @@ export {
     welcome,
     num_trails_state,
     get_parks,
+    get_common_animals,
     park_feature,
     park_activity,
     park_category,
-    park_state
+    park_state,
 }

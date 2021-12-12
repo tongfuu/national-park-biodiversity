@@ -19,7 +19,7 @@ app.get('/hello', routes.hello)
 app.get('/map/parks_in_state', routes.parks_in_state)
 
 // Route 2 - register as GET 
-app.get('/map/common_animals', routes.common_animals_state)
+app.get('/map/common_animals_state', routes.common_animals_state)
 
 // Route 3 - register as GET 
 app.get('/map/num_trails', routes.num_trails_state)

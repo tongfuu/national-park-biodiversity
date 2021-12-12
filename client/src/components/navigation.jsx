@@ -37,11 +37,6 @@ export const Navigation = (props) => {
               </a>
             </li>
             <li>
-              <a active href="/parks">
-                Parks
-              </a>
-            </li>
-            <li>
               <a active href="/search">
                 Search
               </a>

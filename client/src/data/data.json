@@ -161,22 +161,22 @@
   },
   "Features": [
     {
-      "icon": "fa fa-comments-o",
+      "icon": "fa fa-book",
+      "title": "Home",
+      "text": "home page"
+    },
+    {
+      "icon": "fa fa-map-marker",
       "title": "Map",
       "text": "interactive map"
     },
     {
-      "icon": "fa fa-bullhorn",
-      "title": "Parks",
-      "text": "find park"
-    },
-    {
-      "icon": "fa fa-group",
+      "icon": "fa fa-search",
       "title": "Search",
       "text": "search based on options and get statistical analysis"
     },
     {
-      "icon": "fa fa-magic",
+      "icon": "fa fa-car",
       "title": "Trail",
       "text": "find trails"
     }

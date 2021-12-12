@@ -42,7 +42,7 @@ async function parks_in_state(req, res) {
 async function common_animals_state(req, res) {
 
     const state = req.query.state
-    var query = `SELECT common_names
+    var query = `SELECT common_names AS names
     FROM Species s JOIN Park p ON s.park_name = p.park_name
     WHERE p.state = '${state}'
     LIMIT 3
@@ -66,7 +66,7 @@ async function common_animals_state(req, res) {
 async function num_trails_state(req, res) {
 
     const state = req.query.state
-    var query = `SELECT state_name, count(*) AS numTrails
+    var query = `SELECT count(*) AS numTrails
     FROM Trails
     WHERE state_name = '${state}'
     `;
@@ -129,7 +129,7 @@ async function species_state(req, res) {
     const state = req.query.state
     var query = `SELECT distinct scientific_name FROM Species s join Park p on s.park_name = p.park_name WHERE p.state = '${state}' LIMIT 100
     `;
-    console.log(query)
+    // console.log(query)
     connection.query(query, function (error, results, fields) {
         if (error) {
             //console.log(error)
