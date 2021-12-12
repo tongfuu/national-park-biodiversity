@@ -12,21 +12,20 @@ const theme = createTheme({
 });
 
 const columns = [
-  { field: 'trail_name', flex: 1, headerName: 'Trail Name', minWidth: 150},
-  { field: 'park_name', flex: 1, headerName: 'Park Name', minWidth: 150}
+  { field: 'trail_name', flex: 1, headerName: 'Trail Name', minWidth: 150}
 
 ];
 
 export const TrailsTable = (props) => {
   return (
-    <div style={{ height: 400, width: '60%', margin: 'auto', padding: '15px'}}>
+    <div style={{ height: 330, width: '100%'}}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <DataGrid
         rows={props.rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={4}
+        rowsPerPageOptions={[4]}
       />
       </ThemeProvider>
     </div>
