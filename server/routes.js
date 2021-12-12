@@ -203,20 +203,20 @@ async function scientific_state(req, res) {
     const name = req.query.name
     var query = `SELECT count(scientific_name) as num, state 
     FROM Species s join Park p on s.park_name = p.park_name
-    WHERE scientific_name = '${name}'
+    WHERE common_names LIKE '%${name}%'
     GROUP BY state
-    ORDER BY count(scientific_name)
-    LIMIT 10 
+    ORDER BY count(scientific_name) desc
     `;
-
+    //console.log(query)
     connection.query(query, function (error, results, fields) {
         if (error) {
-            // console.log(error)
+            //console.log(query)
             res.json({ error: error })
         } else if (results.length > 0) {
-            // console.log(results)
+            console.log('2')
             res.json({ results: results })
         } else {
+            console.log('1')
             res.json({ results: []})
         }
     });
@@ -299,26 +299,29 @@ async function park_activity(req, res) {
 // Route 12 (handler)
 async function state_birding(req, res) {
     const state = req.query.state
-    var query = `WITH Bird_Park AS (
-        SELECT Park.park_name AS p, Park.state AS t
-        FROM Park JOIN Species
-        ON Park.park_name = Species.park_name
-        WHERE Species.category = 'Bird'
-        ),
-        Park_Species AS (
-          SELECT Park.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
-          FROM Park JOIN Species
-          ON Park.park_name = Species.park_name
-          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' OR Species.conservation_status = 'Threatened'
-          AND Species.category = 'Bird'
-        )
-        SELECT Bird_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
-        FROM Bird_Park
-        JOIN Activities ON Bird_Park.p = Activities.park_name
-        JOIN Park_Species ON Bird_Park.p = Park_Species.p
-        JOIN Trails ON Bird_Park.p = Trails.park_name
-        WHERE Activities.activity_name = 'birding' AND Trails.state_name = '${state}'
-        LIMIT 500
+    var query = `WITH birding_park as (
+        select distinct Park.park_name AS park_name
+        From Park join (
+        select a.park_name AS park
+        From Activities a
+        Where a.activity_name = 'birding'
+        ) x on x.park = Park.park_name
+        where Park.state = '${state}'
+    ),
+    species_park as (
+        select Park.park_name AS park_name, a.scientific_name as species_name, a.conservation_status
+        From Park join (
+        select s.park_name as park, s.conservation_status, s.scientific_name
+        From Species s
+        Where s.conservation_status = 'Endangered' OR s.conservation_status = 'species_of_concern' OR s.conservation_status = 'Threatened'
+        AND s.category = 'Bird'
+        ) a on a.park = Park.park_name
+        Where Park.state = '${state}'
+    )
+    select s.park_name as park_name, s.species_name, s.conservation_status
+    From birding_park b join species_park s
+    on s.park_name = b.park_name
+    group by s.park_name, s.species_name, s.conservation_status
         `;
 
     connection.query(query, function (error, results, fields) {
@@ -340,27 +343,29 @@ async function state_fishing(req, res) {
     
     const state = req.query.state
 
-    var query = `WITH Fish_Park AS (
-        SELECT Park.park_name AS p, Park.state AS t
-        FROM Park JOIN Species
-        ON Park.park_name = Species.park_name
-        WHERE Species.category = 'Fish'
-        ),
-        Park_Species AS (
-          SELECT Park.park_name AS p, Species.scientific_name AS n, Species.conservation_status AS s
-          FROM Park JOIN Species
-          ON Park.park_name = Species.park_name
-          WHERE Species.conservation_status = 'Endangered' OR Species.conservation_status = 'species_of_concern' 
-          OR Species.conservation_status = 'Threatened'
-          AND Species.category = 'Fish'
-        )
-        SELECT Fish_Park.p AS park_name, Park_Species.n AS species_name, Park_Species.s AS conservation_status
-        FROM Fish_Park
-        JOIN Activities ON Fish_Park.p = Activities.park_name
-        JOIN Park_Species ON Fish_Park.p = Park_Species.p
-        JOIN Trails ON Fish_Park.p = Trails.park_name
-        WHERE Activities.activity_name = 'fishing' AND Trails.state_name = '${state}'
-        LIMIT 500;
+    var query = `WITH fishing_park as (
+        select distinct Park.park_name AS park_name
+        From Park join (
+        select a.park_name AS park
+        From Activities a
+        Where a.activity_name = 'fishing'
+        ) x on x.park = Park.park_name
+        where Park.state = '${state}'
+    ),
+    species_park as (
+        select Park.park_name AS park_name, a.scientific_name as species_name, a.conservation_status
+        From Park join (
+        select s.park_name as park, s.conservation_status, s.scientific_name
+        From Species s
+        Where s.conservation_status = 'Endangered' OR s.conservation_status = 'species_of_concern' OR s.conservation_status = 'Threatened'
+        AND s.category = 'Fish'
+        ) a on a.park = Park.park_name
+        Where Park.state = '${state}'
+    )
+    select s.park_name as park_name, s.species_name, s.conservation_status
+    From fishing_park f join species_park s
+    on s.park_name = f.park_name
+    group by s.park_name, s.species_name, s.conservation_status
     `;
 
     connection.query(query, function (error, results, fields) {
