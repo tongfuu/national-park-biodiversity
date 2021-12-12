@@ -21,7 +21,7 @@ export const MapChart = ({ setTooltipContent }) => {
 
   return (
     <>
-      <ComposableMap data-tip="" projectionConfig={{ scale: 200 }}>
+      <ComposableMap projection="geoAlbersUsa" data-tip="">
         <ZoomableGroup>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
@@ -35,9 +35,9 @@ export const MapChart = ({ setTooltipContent }) => {
                     setTooltipContent(`${state_name.id}`);
 
                   }}
-                //   onMouseLeave={() => {
-
-                //   }}
+                  onMouseLeave={() => {
+                    setTooltipContent("");
+                  }}
                   style={{
                     default: {
                       fill: "#D6D6DA",

@@ -20,12 +20,17 @@ import { get_parks } from '../fetcher'
     }
 
     setContent(state_name) {
-      get_parks(state_name).then(res => {
-        this.setState({ num_new: res.results[0].num}, () =>{
-          this.setState({ content: state_name + " - " + this.state.num_new});
-        }
-        )
-      })
+      if(state_name!=""){
+        get_parks(state_name).then(res => {
+          this.setState({ num_new: res.results[0].num}, () =>{
+            this.setState({ content: state_name + " - " + this.state.num_new});
+          }
+          )
+        })
+      }else{
+        this.setState({ content: ""});
+      }
+      
     }
 
   
