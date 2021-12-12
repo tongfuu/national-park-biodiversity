@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, FormInput, FormGroup, FormSelect, Button} from "shards-react";
+import { Form, FormGroup, FormSelect, Button} from "shards-react";
 
 import { Navigation } from "../components/navigation";
 import { TrailsTable } from "../components/trailsTable";
+import { EndangeredTable } from "../components/endangered";
 
-import { park_feature, park_activity } from '../fetcher'
+import { park_feature, park_activity, birding_state, fishing_state } from '../fetcher'
 
 import {
     Divider,
@@ -20,14 +21,20 @@ class TrailsPage extends React.Component {
           featureName: "beach",
           activityName: "backpacking",
           trailsResults: [],
-          rows: [],
+          trailsRows: [],
+          state: '',
+          endangeredResults: [],
+          endangeredRows: []
       }
 
       this.handleParkNameChange = this.handleParkNameChange.bind(this)
       this.handleFeatureNameChange = this.handleFeatureNameChange.bind(this)
       this.handleActivityNameChange = this.handleFeatureNameChange.bind(this)
+      this.handleStateNameChange = this.handleStateNameChange.bind(this)
       this.updateFeatureSearch = this.updateFeatureSearch.bind(this)
       this.updateActivitySearch = this.updateActivitySearch.bind(this)
+      this.updateBirding = this.updateBirding.bind(this)
+      this.updateFishing = this.updateFishing.bind(this)
 
   }
 
@@ -44,37 +51,56 @@ class TrailsPage extends React.Component {
     this.setState({ activityName: event.target.value })
   }
 
+  handleStateNameChange(event) {
+    this.setState({ state: event.target.value })
+  }
+
   updateFeatureSearch() {
       park_feature(this.state.parkName, this.state.featureName).then(res => {
           this.setState({ trailsResults: res.results })
-          this.setState({ rows: []});
+          this.setState({ trailsRows: []});
 
           this.state.trailsResults.forEach((item, i) => {
             const ele = {id: i, trail_name: item.trail_name, park_name: item.park_name};
-            this.setState({ rows: [...this.state.rows, ele]})
+            this.setState({ trailsRows: [...this.state.trailsRows, ele]})
         });
       })
-    
   }
 
   updateActivitySearch() {
     park_activity(this.state.parkName, this.state.activityName).then(res => {
         this.setState({ trailsResults: res.results })
-        this.setState({ rows: []});
+        this.setState({ trailsRows: []});
 
         this.state.trailsResults.forEach((item, i) => {
           const ele = {id: i, trail_name: item.trail_name, park_name: item.park_name};
-          this.setState({ rows: [...this.state.rows, ele]})
+          this.setState({ trailsRows: [...this.state.trailsRows, ele]})
       });
     })
-  
-}
+  }
 
-  componentDidMount() {
-    //   park_feature(this.state.parkName, this.state.featureName).then(res => {
-    //       this.setState({ trailsResults: res.results })
-    //   })
+  updateBirding() {
+    birding_state(this.state.state).then(res => {
+        this.setState({ endangeredResults: res.results })
+        this.setState({ endangeredRows: []});
 
+        this.state.endangeredResults.forEach((item, i) => {
+          const ele = {id: i, park_name: item.park_name, species_name: item.species_name, conservation_status: item.conservation_status};
+          this.setState({ endangeredRows: [...this.state.endangeredRows, ele]})
+      });
+    })
+  }
+
+  updateFishing() {
+    fishing_state(this.state.state).then(res => {
+        this.setState({ endangeredResults: res.results })
+        this.setState({ endangeredRows: []});
+
+        this.state.endangeredResults.forEach((item, i) => {
+          const ele = {id: i, park_name: item.park_name, species_name: item.species_name, conservation_status: item.conservation_status};
+          this.setState({ endangeredRows: [...this.state.endangeredRows, ele]})
+      });
+    })
   }
 
   render() {
@@ -200,14 +226,56 @@ class TrailsPage extends React.Component {
                         <option value="whitewater-kayaking">whitewater-kayaking</option>
                         </FormSelect>
                     
-
                         <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateFeatureSearch}>Search Feature</Button>
                         <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateActivitySearch}>Search Activity</Button>
 
                     </FormGroup>
               </Form>
               <Divider />
-              <TrailsTable rows={this.state.rows}/>
+              <TrailsTable rows={this.state.trailsRows}/>
+              <Divider />
+
+
+              <Form style={{ width: '80vw', margin: '0 auto', marginTop: '5vh' }}>
+                    <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                        
+                        <label>State</label>
+
+                        <FormSelect onChange={this.handleStateNameChange}>
+                        <option value="ME">ME</option>
+                        <option value="UT">UT</option>
+                        <option value="SD">SD</option>
+                        <option value="TX">TX</option>
+                        <option value="FL">FL</option>
+                        <option value="CO">CO</option>
+                        <option value="NM">NM</option>
+                        <option value="CA">CA</option>
+                        <option value="SC">SC</option>
+                        <option value="OR">OR</option>
+                        <option value="OH">OH</option>
+                        <option value="AK">AK</option>
+                        <option value="MT">MT</option>
+                        <option value="AZ">AZ</option>
+                        <option value="WY">WY</option>
+                        <option value="NV">NV</option>
+                        <option value="NC">NC</option>
+                        <option value="HI">HI</option>
+                        <option value="AR">AR</option>
+                        <option value="MI">MI</option>
+                        <option value="KY">KY</option>
+                        <option value="WA">WA</option>
+                        <option value="VA">VA</option>
+                        <option value="ND">ND</option>
+                        <option value="MN">MN</option>
+                        </FormSelect>
+                    
+                        <Button style={{ marginLeft: '7vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateBirding}>Birding</Button>
+                        <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateFishing}>Fishing</Button>
+
+                    </FormGroup>
+              </Form>
+              <Divider />
+              <EndangeredTable rows={this.state.endangeredRows}/>
           </div>
       )
   }

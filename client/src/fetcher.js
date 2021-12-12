@@ -49,7 +49,19 @@ const park_state = async (state) => {
     return res.json()
 }
 
+const birding_state = async (state) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/state_birding?state=${state}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
 
+const fishing_state = async (state) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/state_fishing?state=${state}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
 
 export {
     welcome,
@@ -58,5 +70,7 @@ export {
     park_feature,
     park_activity,
     park_category,
-    park_state
+    park_state,
+    birding_state,
+    fishing_state
 }

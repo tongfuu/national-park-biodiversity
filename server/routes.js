@@ -127,18 +127,19 @@ async function search_species(req, res) {
 async function species_state(req, res) {
 
     const state = req.query.state
-    var query = `SELECT distinct scientific_name FROM Species s join Park p on s.park_name = p.park_name WHERE p.state = '${state}' LIMIT 100
+    var query = `SELECT distinct scientific_name
+    FROM Species s join Park p on s.park_name = p.park_name
+    WHERE p.state = '${state}' LIMIT 100
     `;
-    console.log(query)
+
     connection.query(query, function (error, results, fields) {
         if (error) {
-            //console.log(error)
+            // console.log(error)
             res.json({ error: error })
         } else if (results.length > 0) {
-            //console.log(results)
+            // console.log(results)
             res.json({ results: results })
         } else {
-            //console.log('1')
             res.json({ results: []})
         }
     });
