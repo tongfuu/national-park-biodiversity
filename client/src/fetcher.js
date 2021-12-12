@@ -35,6 +35,20 @@ const park_activity = async (park, activity) => {
     return res.json()
 }
 
+const park_category = async (park, category) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/search_species?category=${category}&park=${park}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const park_state = async (state) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/species_state?state=${state}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 
 
 export {
@@ -42,5 +56,7 @@ export {
     num_trails_state,
     get_parks,
     park_feature,
-    park_activity
+    park_activity,
+    park_category,
+    park_state
 }
