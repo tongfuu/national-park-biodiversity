@@ -21,8 +21,15 @@ const get_parks = async (state) => {
     return res.json()
 }
 
-const park_feature = async (park, name) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/park_feature?park=${park}&name=${name}`, {
+const park_feature = async (park, feature) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/park_feature?park=${park}&feature=${feature}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const park_activity = async (park, activity) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/park_activity?park=${park}&activity=${activity}`, {
         method: 'GET',
     })
     return res.json()
@@ -34,5 +41,6 @@ export {
     welcome,
     num_trails_state,
     get_parks,
-    park_feature
+    park_feature,
+    park_activity
 }

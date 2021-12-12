@@ -254,11 +254,11 @@ async function green_state(req, res) {
 
 // Route 10 (handler)
 async function park_feature(req, res) {
-    const name = req.query.name
+    const feature = req.query.feature
     const park = req.query.park
     var query = `SELECT * 
     FROM Features s 
-    WHERE s.park_name = '${park}' and s.feature_name = '${name}'
+    WHERE s.park_name = '${park}' and s.feature_name = '${feature}'
     `;
 
     connection.query(query, function (error, results, fields) {
