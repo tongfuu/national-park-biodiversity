@@ -30,8 +30,8 @@ app.get('/search/search_species', routes.search_species)
 // Route 5 - register as GET 
 app.get('/search/species_state', routes.species_state)
 
-// Route 6 - register as GET 
-app.get('/search/common_park', routes.common_park)
+// // Route 6 - register as GET 
+// app.get('/search/common_park', routes.common_park)
 
 // Route 7  - register as GET
 app.get('/search/density_park', routes.density_park)

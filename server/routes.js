@@ -26,10 +26,7 @@ async function parks_in_state(req, res) {
     var query = `SELECT COUNT(park_name) AS num FROM Park WHERE state = '${state}'`;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            //console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             //console.log(results)
             res.json({ results: results })
         } else {
@@ -50,10 +47,7 @@ async function common_animals_state(req, res) {
 
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            //console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             //console.log(results)
             res.json({ results: results })
         } else {
@@ -73,10 +67,7 @@ async function num_trails_state(req, res) {
 
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            //console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             //console.log(results)
             res.json({ results: results })
         } else {
@@ -94,10 +85,7 @@ async function search_species(req, res) {
         FROM Species
         WHERE category = '${category}' AND park_name = '${park}'`, 
         function (error, results, fields) {
-            if (error) {
-                //console.log(error)
-                res.json({ error: error })
-            } else if (results.length > 0) {
+            if (results.length > 0) {
                 // console.log(results)
                 res.json({ results: results })
             } else {
@@ -109,10 +97,7 @@ async function search_species(req, res) {
         FROM Species
         WHERE park_name = '${park}'`, 
         function (error, results, fields) {
-            if (error) {
-                //console.log(error)
-                res.json({ error: error })
-            } else if (results.length > 0) {
+            if (results.length > 0) {
                 // console.log(results)
                 res.json({ results: results })
             } else {
@@ -133,10 +118,7 @@ async function species_state(req, res) {
     `;
     // console.log(query)
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -145,27 +127,6 @@ async function species_state(req, res) {
     });
 }
 
-// Route 6 (handler)
-async function common_park(req, res) {
-    const name = req.query.name
-    var query = `SELECT DISTINCT park_name 
-    FROM Species
-    WHERE common_names LIKE '%${name}%'    
-    `;
-
-
-    connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
-            // console.log(results)
-            res.json({ results: results })
-        } else {
-            res.json({ results: []})
-        }
-    });
-}
 
 
 // Route 7 (handler)
@@ -186,10 +147,7 @@ async function density_park(req, res) {
     `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -210,10 +168,7 @@ async function scientific_state(req, res) {
     `;
     //console.log(query)
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            //console.log(query)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             res.json({ results: results })
         } else {
             res.json({ results: []})
@@ -238,10 +193,7 @@ async function green_state(req, res) {
     `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -260,10 +212,7 @@ async function park_feature(req, res) {
     `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -283,10 +232,7 @@ async function park_activity(req, res) {
     `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -324,10 +270,7 @@ async function state_birding(req, res) {
         `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            //console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             //console.log(results)
             res.json({ results: results })
         } else {
@@ -368,10 +311,7 @@ async function state_fishing(req, res) {
     `;
 
     connection.query(query, function (error, results, fields) {
-        if (error) {
-            // console.log(error)
-            res.json({ error: error })
-        } else if (results.length > 0) {
+        if (results.length > 0) {
             // console.log(results)
             res.json({ results: results })
         } else {
@@ -392,7 +332,6 @@ module.exports = {
     green_state,
     park_activity,
     state_fishing,
-    common_park,
     scientific_state,
     park_feature,
     state_birding
