@@ -181,8 +181,8 @@ async function density_park(req, res) {
         )
         SELECT b.category, b.speciesNum/a.Acres AS density
         FROM Park a JOIN temp b ON a.park_name = b.park_name
-        ORDER BY density 
-        LIMIT 10
+        ORDER BY density DESC
+        LIMIT 5
     `;
 
     connection.query(query, function (error, results, fields) {
