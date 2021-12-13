@@ -30,6 +30,14 @@ const get_common_animals = async (state) => {
 }
 
 
+const get_green = async (state) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/green_state?state=${state}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+
 
 const park_feature = async (park, feature) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/trail/park_feature?park=${park}&feature=${feature}`, {
@@ -99,5 +107,6 @@ export {
     birding_state,
     fishing_state,
     scientific_state,
-    density_park
+    density_park,
+    get_green
 }

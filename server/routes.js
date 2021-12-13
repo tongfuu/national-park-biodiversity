@@ -232,7 +232,7 @@ async function green_state(req, res) {
         FROM Park p
         GROUP BY state
       )
-      SELECT t.acres/a.area as percent, a.state
+      SELECT (t.acres/a.area)*100 as percent
       FROM Area a join total_acres t on a.state = t.state
       WHERE a.state = '${state}';      
     `;
@@ -245,7 +245,7 @@ async function green_state(req, res) {
             // console.log(results)
             res.json({ results: results })
         } else {
-            res.json({ results: []})
+            res.json({ results: [null]})
         }
     });
 }
