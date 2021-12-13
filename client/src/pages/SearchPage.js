@@ -109,8 +109,7 @@ class SearchPage extends React.Component {
         this.setState({ densityRows: [['Category', 'Density', { role: 'style'}]] })
         
         this.state.densityResults.forEach((item, i) => {
-          const ele = [item.category, parseFloat(item.density)];
-          console.log(item.speciesNum)
+          const ele = [item.category, parseFloat(item.density), this.state.colors[i]];
           this.setState({ densityRows: [...this.state.densityRows, ele]})
       });
     }
