@@ -395,9 +395,9 @@ render() {
                     </FormSelect>
                 
 
-                    <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateStateSearch}>Search State</Button>
+                    
                     <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateCategorySearch}>Search Category</Button>
-
+                    <Button style={{ marginLeft: '2vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateStateSearch}>Search State</Button>
                 </FormGroup>
           </Form>
 
