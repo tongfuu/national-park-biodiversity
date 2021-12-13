@@ -206,6 +206,7 @@ async function scientific_state(req, res) {
     WHERE common_names LIKE '%${name}%'
     GROUP BY state
     ORDER BY count(scientific_name) desc
+    LIMIT 5
     `;
     //console.log(query)
     connection.query(query, function (error, results, fields) {
@@ -213,10 +214,8 @@ async function scientific_state(req, res) {
             //console.log(query)
             res.json({ error: error })
         } else if (results.length > 0) {
-            console.log('2')
             res.json({ results: results })
         } else {
-            console.log('1')
             res.json({ results: []})
         }
     });

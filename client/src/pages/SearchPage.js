@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form, FormInput, FormGroup, FormSelect, Button} from "shards-react";
 
+import { Chart } from "react-google-charts";
+
 import { Navigation } from "../components/navigation";
 import { SpeciesTable } from "../components/speciesTable";
-import { ScientificNameTable } from "../components/scientificName";
 
 import { park_category, park_state, scientific_state } from '../fetcher'
 
@@ -22,9 +23,10 @@ class SearchPage extends React.Component {
         stateName: "ME",
         searchResults: [],
         searchrows: [],
-        scientific_name: "",
+        scientific_name: "fox",
         scientificResults: [],
-        scientificRows: []
+        scientificRows: [],
+        rowsRender:  [['State', 'Number of Occurance'], ['CA', 65], ['AK', 36], ['UT', 34], ['VA', 30], ['CO', 26]]
     }
 
     this.handleParkNameChange = this.handleParkNameChange.bind(this)
@@ -78,15 +80,18 @@ updateStateSearch() {
 }
 
 updateScientificSearch() {
+
   scientific_state(this.state.scientific_name).then(res => {
       this.setState({ scientificResults: res.results })
-      this.setState({ scientificRows: []});
-
+      this.setState({ rowsRender: [['State', 'Number of Occurance']] })
+      
       this.state.scientificResults.forEach((item, i) => {
-        const ele = {id: i, num: item.num, state: item.state};
-        this.setState({ scientificRows: [...this.state.scientificRows, ele]})
+        const ele = [item.state, parseInt(item.num)];
+        this.setState({ rowsRender: [...this.state.rowsRender, ele]})
     });
-  })
+  }
+  
+  )
 }
 
 
@@ -94,9 +99,78 @@ render() {
   return (
       <div>
           <Navigation />
-          <Form style={{ width: '80vw', margin: '0 auto', marginTop: '10vh' }}>
+          <div className='text-center' style={{padding: 100}}>
+            <div className='col-md-10 col-md-offset-1 section-title'>
+              <h2>Species Finder</h2>
+              <h3>Do you want to know...</h3>
+            </div>
+          </div>
+
+          <div className="row">
+          <div className="col-xs-12 col-md-6" >
+            <div className='text-center'>
+            <h5>How many _____ in each state?</h5>
+            </div>
+            <Form style={{  width: '80vw', marginLeft: '15vw'}}>
+                      <FormGroup style={{ width: '20vw' }}>
+                          <label>Animal Name</label>
+                          <FormInput value = {this.state.scientific_name} onChange={this.handleScientificNameChange} placeholder="scientific_name"/>
+                          <Button style={{ marginLeft: '12vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateScientificSearch}>Search</Button>
+
+                      </FormGroup>
+            </Form>
+
+              <Chart
+                width={'500px'}
+                height={'300px'}
+                style={{ marginTop: '2vh', marginLeft: '3vh'}}
+                chartType="BarChart"
+                loader={<div>Loading Chart</div>}
+                data={
+                  this.state.rowsRender
+                }
+                options={{
+                  title: 'Number of Occurances in Each State',
+                  width: 600,
+                  height: 400,
+                  hAxis: {
+                    minValue: 0,
+                    maxValue: 100
+                  }
+                }}
+              />
+
+          <div className="col-xs-12 col-md-6">
+                {/* for second graph */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </div>
+
+          </div>
+          </div>
+
+          <div className='text-center' style={{ marginTop: '20vh'}}>
+              <h3>Now, Search!</h3>
+          </div>
+
+
+          <Form style={{ width: '80vw', margin: '0 auto', marginTop: '4vh', background: '#f6f6f6' }}>
                 <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                    <label>Park</label>
+                    <label style={{ marginTop: '15px'}}>Park</label>
+
                     <FormSelect onChange={this.handleParkNameChange}>
                     <option value="Acadia National Park">Acadia National Park</option>
                     <option value="Arches National Park">Arches National Park</option>
@@ -214,19 +288,7 @@ render() {
           </Form>
           <Divider />
           <SpeciesTable rows={this.state.searchrows}/>
-          <Divider />
 
-          <Form style={{ width: '80vw', margin: '0 auto', marginTop: '5vh' }}>
-                    <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                        
-                        <label>Scientific_name</label>
-                        <FormInput value = {this.state.scientific_name} onChange={this.handleScientificNameChange} placeholder="scientific_name"/>
-                        <Button style={{ marginLeft: '7vh', marginTop: '2vh', display: 'inline-block'}} onClick={this.updateScientificSearch}>Search Scientific_name</Button>
-
-                    </FormGroup>
-              </Form>
-              <Divider />
-              <ScientificNameTable rows={this.state.scientificRows}/>
       </div>
   )
 }

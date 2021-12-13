@@ -18,7 +18,7 @@ const theme = createTheme({
 
   export const SpeciesTable = (props) => {
     return (
-      <div style={{ height: 400, width: '60%', margin: 'auto', padding: '15px'}}>
+      <div style={{ height: 400, width: '60%', margin: 'auto', padding: '40px'}}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <DataGrid
