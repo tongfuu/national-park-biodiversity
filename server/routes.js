@@ -320,6 +320,21 @@ async function state_fishing(req, res) {
     });
 }
 
+// Route 14 (handler)
+async function authenticate(req, res) {
+    const username = req.query.username;
+    const password = req.query.password;
+
+    const credentials = ['nationalpark']
+
+    if (credentials.includes((username+password))) {
+        res.json({ token: 'token123'})
+    } else{
+        res.json({ token: 'notoken'})
+    }
+    
+}
+
 
 module.exports = {
     hello,
@@ -334,5 +349,6 @@ module.exports = {
     state_fishing,
     scientific_state,
     park_feature,
-    state_birding
+    state_birding,
+    authenticate
 }

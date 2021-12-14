@@ -95,6 +95,13 @@ const density_park = async (park) => {
     return res.json()
 }
 
+const authenticate = async (credentials) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/login/authenticate?username=${credentials.username}&password=${credentials.password}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 export {
     welcome,
     num_trails_state,
@@ -108,5 +115,6 @@ export {
     fishing_state,
     scientific_state,
     density_park,
-    get_green
+    get_green,
+    authenticate
 }

@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import ReactTooltip from "react-tooltip";
-// import { useState } from "react";
 
 import * as serviceWorker from './serviceWorker';
-// import MapChart from './pages/MapPage';
 
 import {
 	BrowserRouter as Router,
@@ -14,21 +11,9 @@ import {
 } from 'react-router-dom';
 
 import App from './App';
-// import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
 import SearchPage from './pages/SearchPage';
 import TrailsPage from './pages/TrailsPage';
-
-
-// function App2() {
-// 	const [content, setContent] = useState("");
-// 	return (
-// 	  <div>
-// 		<MapChart setTooltipContent={setContent} />
-// 		<ReactTooltip>{content}</ReactTooltip>
-// 	  </div>
-// 	);
-//   }
 
 
 ReactDOM.render(

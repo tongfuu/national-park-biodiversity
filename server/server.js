@@ -54,6 +54,9 @@ app.get('/trail/state_birding', routes.state_birding)
 // Route 13  - register as GET
 app.get('/trail/state_fishing', routes.state_fishing)
 
+// Route 14  - register as GET
+app.get('/login/authenticate', routes.authenticate)
+
 app.listen(config.server_port, () => {
     console.log(`Server running at http://${config.server_host}:${config.server_port}/`);
 });
