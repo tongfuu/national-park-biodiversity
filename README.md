@@ -15,3 +15,64 @@
 5. In the server terminal, run `npm start`
 6. In the client terminal, run `npm start`
 7. This will open up a react app @localhost:3000
+
+
+## SQL queries highlights (Optimize queries to reduce frontend response time)
+```sql
+/* List parks and endangered bird species in parks with specified state */
+WITH birding_park
+	AS (SELECT DISTINCT park.park_name AS park_name
+		FROM park
+			JOIN (SELECT a.park_name AS park
+				FROM activities a
+				WHERE a.activity_name = 'birding') x
+			   ON x.park = park.park_name
+		WHERE park.state = '${state}'), species_park
+	AS (SELECT park.park_name AS park_name,
+		a.scientific_name AS species_name,
+		a.conservation_status
+            FROM park SELECT
+		JOIN (SELECT s.park_name AS park,
+			     s.conservation_status,
+			     s.scientific_name
+		      FROM species s
+		      WHERE s.conservation_status = 'Endangered'
+				OR s.conservation_status = 'Species_of_concern'
+				OR s.conservation_status = 'Threatened' AND s.category = 'Bird') a
+		       ON a.park = park.park_name
+			 WHERE park.state = '${state}')
+SELECT s.park_name AS park_name, s.species_name, s.conservation_status
+FROM birding_park b
+	JOIN species_park s
+	  ON s.park_name = b.park_name
+GROUP BY s.park_name,
+	 s.species_name,
+	 s.conservation_status
+	 species_of_concern
+```
+
+
+## UI
+Login
+![Login](UI/Login.png)
+
+Home
+![Home](UI/Home.png)
+
+Features
+![Features](UI/Features.png)
+
+Interactive Map
+![Map](UI/InteractiveMap.png)
+
+Search trails
+![Search](UI/Search.png)
+
+Count - How many xx?
+![Count](UI/Count.png)
+
+Learn more about Species!
+![Species](UI/Species.png)
+
+
+
